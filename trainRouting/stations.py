@@ -1,5 +1,6 @@
 import re
 from datetime import date
+from . import storage
 
 
 class Station:
@@ -26,7 +27,7 @@ class Station:
         neighbours = {i for i in storage.get_station_by_name(self.name).get_stations(current_date)}
         for index in [self.station_id - 1, self.station_id + 1]:
             neigh = storage.get_station_by_index(index)
-            if neigh and neigh.is_open(current_date) and neigh.train_line == self.train_line:
+            if neigh and neigh.is_open(current_date) and neigh.get_train_line() == self.get_train_line():
                 neighbours.add(index)
 
         neighbours.remove(self.station_id)

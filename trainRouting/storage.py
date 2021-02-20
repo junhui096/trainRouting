@@ -1,15 +1,23 @@
 import pandas as pd
-from trainRouting import stations
-
+from . import stations
 from datetime import datetime
 
-df = pd.read_csv('StationMap.csv')
+try:
+    df = pd.read_csv('StationMap.csv')
+except FileNotFoundError:
+    df = pd.DataFrame()
+    print("The csv file cannot be found. Please ensure that the csv file is named StationMap.csv and contained in "
+          "working dir")
 
 interchange_station_name_to_station_map = {}
 station_index_to_station_map = {}
 
 for index, row in df.iterrows():
-    opening_date = datetime.strptime(row['Opening Date'], '%d-%b-%y').date()
+    try:
+        opening_date = datetime.strptime(row['Opening Date'], '%d-%b-%y').date()
+    except ValueError:
+        opening_date = datetime.strptime(row['Opening Date'], '%b-%y').date()
+
     name = row['Station Name']
     if name not in interchange_station_name_to_station_map:
         st = stations.InterchangeStation(name=name)
