@@ -1,0 +1,9 @@
+pandas~=1.2.2
+setuptools~=50.3.2
+pip~=20.2.4
+wheel~=0.35.1
+pytz~=2020.5
+numpy~=1.19.2
+python-dateutil~=2.8.1
+six~=1.15.0
+Flask~=1.1.2
