@@ -13,8 +13,10 @@ def mock_get_station_ids_by_name(name, current_time):
         return [0, 5]
     elif name == "Station 1":
         return [1, 3]
-    elif name == "Station 2":
+    elif name == "Station 2" and not current_time:
         return [2]
+    elif name == "Station 2" and current_time:
+        return []
     elif name == "Station 4":
         return [4]
     elif name == "Unreachable":
@@ -22,6 +24,8 @@ def mock_get_station_ids_by_name(name, current_time):
 
 
 def mock_get_train_line_by_index(index, current_time):
+    if index == 2 and current_time:
+        return None
     if index in [0, 1, 2]:
         return "EW"
     elif index in [3, 4, 5]:
@@ -31,6 +35,8 @@ def mock_get_train_line_by_index(index, current_time):
 
 
 def mock_get_station_code_by_index(index, current_time):
+    if index == 2 and current_time:
+        return None
     mapping = {0: "EW0", 1: "EW1", 2: "EW2", 3: "NS3", 4: "NS4", 5: "NS5", 6: "DT6"}
     return mapping[index]
 

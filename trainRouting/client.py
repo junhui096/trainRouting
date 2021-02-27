@@ -1,10 +1,9 @@
 from datetime import datetime
 from .mrt_network import MRTNetwork
 from .stations_data import get_station_ids_by_name, is_valid_station_name
-from . import config
 
 
-def get_all_routes(source, dest, current_time=config.DEFAULT_DATE_TIME, use_time_costs=False):
+def get_all_routes(source, dest, current_time=datetime.min, use_time_costs=False):
     """
     Driver function to be invoked by package client. Calls the routing algorithm (mrt_network.py), retrieves the routes,
      and returns its details to client of package.
@@ -23,12 +22,12 @@ def get_all_routes(source, dest, current_time=config.DEFAULT_DATE_TIME, use_time
         return []
 
     if not(is_valid_station_name(source)):
-        raise Exception("Invalid source station name {}".format(source))
+        raise Exception("Invalid source station name")
 
     if not (is_valid_station_name(dest)):
-        raise Exception("Invalid dest station name {}".format(dest))
+        raise Exception("Invalid name for destination station")
 
-    source_ids = get_station_ids_by_name(source, current_time)
+    source_ids = get_station_ids_by_name(source, current_time=current_time if use_time_costs else None)
     dest_ids = get_station_ids_by_name(dest, current_time=None)
 
     if not source_ids:

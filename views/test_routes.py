@@ -3,8 +3,6 @@ from .. import app
 from . import routes
 import datetime
 
-mock_time_now = datetime.datetime(year=2020, month=10, day=3)
-
 
 def mock_get_all_routes(source, dest, current_time, use_time_costs):
     if source == "Invalid":
@@ -15,17 +13,6 @@ def mock_get_all_routes(source, dest, current_time, use_time_costs):
 @pytest.fixture
 def mock_train_routing_client(mocker):
     mock = mocker.patch.object(routes, "get_all_routes", side_effect=mock_get_all_routes)
-    return mock
-
-
-@pytest.fixture
-def mock_date_time(mocker):
-    class mydatetime:
-        @classmethod
-        def now(cls):
-            return mock_time_now
-
-    mock = mocker.patch.object(routes, "datetime", mydatetime)
     return mock
 
 
@@ -51,11 +38,11 @@ def test_invalid_start_time_gives_400():
         assert response.status_code == 400
 
 
-def test_successful_rendering_without_current_time(mock_train_routing_client, mock_date_time):
+def test_successful_rendering_without_current_time(mock_train_routing_client):
     with app.test_client() as c:
         response = c.get("/api/v1/get_routes?start=A&end=B")
         assert response.data.decode('utf-8') == "<br/>Travel from A to B<br/>Stations travelled: 5<br/>test route<br/>"
-        mock_train_routing_client.assert_called_with("A", "B", mock_time_now, False)
+        mock_train_routing_client.assert_called_with("A", "B", datetime.datetime.min, False)
         assert response.status_code == 200
 
 

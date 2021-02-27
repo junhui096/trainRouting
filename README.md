@@ -55,8 +55,8 @@ For example:
 
 > http://localhost:5000/api/v1/get_routes?start=Lavender&end=Newton&start_time=2020-01-05T12:30
 
-If current_time parameter is not specified, the current real wall-clock time is used as the start time instead.\
-The default start time can be set in config.py in the trainRouting package.\
+If current time is not specified travel costs between stations and transfer costs within stations are ignored. Furthermore,
+all stations are assumed to be open including stations that have an opening date in the future.\
 By default, the routes are returned in ascending order of the number of stations traversed in the route.\
 If the optional current_time parameter is included by the user, routes are ordered in ascending order of their end_time.
 

@@ -60,12 +60,13 @@ class MRTNetwork:
                     Returns:
                             {Node}: Set of adj nodes
             """
+            None_or_current_time = self.current_time if use_time_costs else None
             neighbours_ids = set()
             neighbours = set()
-            train_line = get_train_line_by_index(self.station_id, self.current_time)
+            train_line = get_train_line_by_index(self.station_id, None_or_current_time)
             station_ids = get_station_ids_by_name(get_station_name_by_index(self.station_id,
-                                                                            self.current_time),
-                                                  self.current_time)
+                                                                            None_or_current_time),
+                                                  None_or_current_time)
             cost_generator = lambda neigh_id: timedelta(minutes=1)
             if use_time_costs:
                 cost_generator = lambda neigh_id: get_travel_time(source_id=self.station_id, dest_id=neigh_id,
@@ -76,7 +77,10 @@ class MRTNetwork:
             for index in [-1, 1]:
                 neigh_id = self.station_id + index
                 try:
-                    neigh_line = get_train_line_by_index(neigh_id, self.current_time + cost_generator(neigh_id))
+                    if use_time_costs:
+                        neigh_line = get_train_line_by_index(neigh_id, self.current_time + cost_generator(neigh_id))
+                    else:
+                        neigh_line = get_train_line_by_index(neigh_id, None)
                 except:
                     continue
 

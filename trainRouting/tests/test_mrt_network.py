@@ -14,7 +14,7 @@ def mock_data_access_calls(mocker):
     mocker.patch.object(mrt_network, "get_travel_time", side_effect=mock_get_travel_time)
 
 
-def test_get_neighbours_returns_adj_stations_on_same_line_or_within_same_interchange():
+def test_get_neighbours_returns_all_adj_stations_on_same_line_or_within_same_interchange_with_use_time_costs_False():
     mock_node = mrt_network.MRTNetwork.Node(station_id=0, current_time=datetime.now())
     assert {neigh.get_id() for neigh in mock_node.get_neighbours(False)} == {1, 5}
     mock_node = mrt_network.MRTNetwork.Node(station_id=1, current_time=datetime.now())
@@ -29,6 +29,11 @@ def test_get_neighbours_returns_adj_stations_on_same_line_or_within_same_interch
     assert {neigh.get_id() for neigh in mock_node.get_neighbours(False)} == {0, 4}
     mock_node = mrt_network.MRTNetwork.Node(station_id=6, current_time=datetime.now())
     assert {neigh.get_id() for neigh in mock_node.get_neighbours(False)} == set()
+
+
+def test_get_neighbours_with_use_time_costs_True_does_not_return_closed_stations():
+    mock_node = mrt_network.MRTNetwork.Node(station_id=1, current_time=datetime.now())
+    assert {neigh.get_id() for neigh in mock_node.get_neighbours(True)} == {0, 3}
 
 
 def test_neighbouring_nodes_have_time_values_higher_than_source_node_when_use_time_costs_is_True():

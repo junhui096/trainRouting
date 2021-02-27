@@ -35,7 +35,7 @@ def get_routes():
     start_time = request.args.get("start_time")
     if not start_time:
         use_time_costs = False
-        start_time = datetime.now()
+        start_time = datetime.min
     else:
         use_time_costs = True
         try:

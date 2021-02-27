@@ -41,8 +41,8 @@ class Route:
         Two routes are equal if they share the same id sequence
         """
         if isinstance(other, Route):
-            return [get_station_name_by_index(i, self.start_time) for i in self.route] == \
-                   [get_station_name_by_index(i, self.start_time) for i in other.route]
+            return [get_station_name_by_index(i, None) for i in self.route] == \
+                   [get_station_name_by_index(i, None) for i in other.route]
         return False
 
     def __str__(self):
@@ -57,7 +57,7 @@ class Route:
         """
         Returns number of stations with distinct names(physical interchanges) in route.
         """
-        return len({get_station_name_by_index(index, self.start_time) for index in self.route})
+        return len({get_station_name_by_index(index, None) for index in self.route})
 
     def num_steps(self):
         """
