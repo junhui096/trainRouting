@@ -15,6 +15,22 @@ in line with travel times in the non-peak band, even though the traveller will o
 * In calculating travel times between stations, the routing package assumes night hours begin from 10pm, inclusive, and end at 6am exclusive.
 * The routing package assumes that the DT, CG and CE are open both at exactly 10pm and exactly 6am, the beginning and end of night hours respectively.
 
+
+## How to run with Docker:
+
+```
+cd trainRouting
+docker build . --tag train_routing:1.0  
+docker run -d -p 5000:5000 --name train train_routing:1.0
+```
+## Run tests with docker:
+
+```
+docker exec -it train /bin/bash
+cd trainRouting/
+pytest
+```
+
 ## Requirements:
 * Python 2.7 (installed by default in Ubuntu 16.04) Otherwise:
 ```
@@ -37,7 +53,7 @@ To get a list of routes between a named source station to a named destination st
 
 > http://localhost:5000/api/v1/get_routes
 
-The html response can be rendered in a browser. Alternatively, the string representation of the results will also be printed to the terminal.
+The html response can be rendered in a browser. 
 
 The url requires these two query parameters: 
 
